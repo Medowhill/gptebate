@@ -12,43 +12,38 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let api_key = args.api_key_file.unwrap_or(".openai_api_key".to_string());
-    let prefix = "I want to practice for my school debate contest. \
-         Act like my opponent in the debate.";
-    let suffix = "You should persuade me and refute my opinion. \
-         Don't give all the reasons for your opinion at once. \
-         Give a single reason at a time, \
-         and give another reason only when I refute it. \
-         Also, speak concisely. \
+    let prefix = "I learned the following logical falacies at school:
+
+         * to misrepresents or exaggerates the opponent's position \
+         or argument in order to make it easier to attack.
+         * to present an argument that is irrelevant to the original topic \
+         distract or divert attention away from the main argument, \
+         thereby confusing or misleading the audience.
+
+         Tomorrow, I have a mock debate at school. \
+         My teacher will be my opponent, and \
+         he will use the above logical falacies during the debate \
+         to test that I can address such falacies and win the debate. \
+         he will misrepresent my argument; \
+         he will distract me with irrelevant arguments. \
+         I want to practice for my debate. \
+         Please act like my opponent in the debate.";
+    let suffix = "Speak concisely. \
          Don't finish the debate easily. \
          Try your best to win the debate.
 
-         As this is practice, I want you to try to make me embarrassed, \
-         so that I can prepare for various situations in the real debate. \
-         Use not only logical evidence but also the following \"bad\" debate skills:
-
-         * Argumentum ad hominem (argument against the person): \
-         attacking the person making an argument instead of addressing the argument itself.
-         * Straw man: to misrepresents or exaggerates the opponent's position \
-         or argument in order to make it easier to attack.
-         * Red herring: an argument is presented that is irrelevant to the original topic. \
-         It's used to distract or divert attention away from the main argument \
-         by introducing an irrelevant argument, thereby confusing or misleading the audience.
-         * Tu quoque (you too): to deflect criticism or accusations by pointing out \
-         the hypocrisy or inconsistency of the accuser, rather than addressing the \
-         substance of the criticism itself.
-         * Hasty generalization: a conclusion is drawn based on insufficient or \
-         unrepresentative evidence. It involves making a sweeping generalization \
-         or assumption about a group, based on a limited sample or a small amount of evidence.
-         * Inappropriate authority: an argument is presented with an appeal to \
-         an authority who lacks expertise or credibility in the relevant field or subject matter.
-
-         Now, let's start the debate.";
+         Let's start the debate. \
+         Start by giving a single reason for your opinion, \
+         and give another reason only when I refute it.";
     let a_suffix = "You go first.";
-    let topic = "The topic is \"is Earth flat or round?\"";
-    let a = "I'm on the side of flat-Earth, and you're on the side of round-Earth.";
-    let b = "I'm on the side of round-Earth, and you're on the side of flat-Earth.";
+    let b_suffix = "Don't forget to use the logical falacies as a strategy to win the debate. \
+        You should misrepresent my argument and attack the misrepresented argument. \
+        You should distract me by introducing irrelevant arguments.";
+    let topic = "The topic is \"is vaccination harmful?\"";
+    let a = "I'm on the side of yes-harmful, and you're on the side of no-not-harmful.";
+    let b = "I'm on the side of no-not-harmful, and you're on the side of yes-harmful.";
     let instruction_a = format!("{}\n{}\n{}\n{}\n{}", prefix, topic, a, suffix, a_suffix);
-    let instruction_b = format!("{}\n{}\n{}\n{}", prefix, topic, b, suffix);
+    let instruction_b = format!("{}\n{}\n{}\n{}\n{}", prefix, topic, b, suffix, b_suffix);
     let mut client =
         openai_client::OpenAIClient::new(&instruction_a, &instruction_b, &api_key, args.cache_file);
     loop {
